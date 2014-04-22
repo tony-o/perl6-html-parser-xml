@@ -4,5 +4,5 @@
   "description" : "Parses HTML to produce an XML::Document",
   "author"      : "Tony ODell",
   "depends"     : [ "XML" ],
-  "source-url"  : "git@github.com:tony-o/perl6-html-parser-xml.git"
+  "source-url"  : "git://github.com/tony-o/perl6-html-parser-xml.git"
 } 
