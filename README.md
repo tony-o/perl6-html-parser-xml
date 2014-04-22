@@ -17,7 +17,9 @@ my $parser = HTML::Parser::XML.new;
 $parser.parse($html);
 $parser.xmldoc; # XML::Document
 ```
->or
+
+>or<
+
 ```perl6
 my $html   = LWP::Simple.get('http://some-non-https-site.com/');
 my $parser = HTML::Parser::XML.new;
