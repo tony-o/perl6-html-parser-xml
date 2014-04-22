@@ -179,6 +179,7 @@ class HTML::Parser::XML {
         $.index++; 
       }
     }
+    return $.xmldoc;
   }
 
 };

@@ -1,22 +1,29 @@
 #Perl 6: HTML::Parser::XML;
 
-
-This module is a hack until someone builds a real HTML::Parser::XML
+This module will read HTML and attempt to build an XML::Document (https://github.com/supernovus/exemel/#xmldocument-xmlnode) 
+##Features:
+* Automatically closes certain tags if certain other tags are encountered
+* Parses dirty HTML fairly well (AFAIK), submit a bug if it doesn't
+* Perl6 Magicness
 
 ##Status:
-###Not working:
-I need to make HTML the root element..right now it is <nil>
-Auto closing tags when I run into the next element that *should* close the tag before it ..
-###Working on:
-The <nil> problem
+Bugs/feature requests
+Maintenance mode
 
-###Parser:
+###Usage:
 ```perl6
 my $html   = LWP::Simple.get('http://some-non-https-site.com/');
 my $parser = HTML::Parser::XML.new;
 $parser.parse($html);
-$parser.d; # XML::Document
+$parser.xmldoc; # XML::Document
 ```
+>or
+```perl6
+my $html   = LWP::Simple.get('http://some-non-https-site.com/');
+my $parser = HTML::Parser::XML.new;
+my $xmldoc = $parser.parse($html);
+```
+
 
 Contact me, segomos on irc.freenode #perl6 (segomos)
 
