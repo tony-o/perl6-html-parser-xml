@@ -1,0 +1,8 @@
+{
+  "name"        : "HTML::Parser::XML",
+  "version"     : "0.1.0",
+  "description" : "Parses HTML to produce an XML::Document",
+  "author"      : "Tony ODell",
+  "depends"     : [ "XML" ],
+  "source-url"  : "git@github.com:tony-o/perl6-html-parser-xml.git"
+} 
