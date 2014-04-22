@@ -39,7 +39,7 @@ class HTML::Parser::XML {
     $.html      = $html;
     my $buffer  = '';
     my $status  = NIL;
-    my $cparent = XML::Element.new: name => 'nil';
+    my $cparent = XML::Element.new: name => 'html';
     my $cbuffer = '';
     my $tbuffer = '';
     my $mquote  = '';
@@ -138,19 +138,38 @@ class HTML::Parser::XML {
             if $tag.substr(0,1) eq '/' {
               @nest[@nest.elems - 1].append(XML::Text.new(text => $tbuffer)) if $tag ne '!--' && $tbuffer ne '';
               $tbuffer = '';
-              @nest.pop if @nest.elems > 2;
+              @nest.pop if @nest.elems > 1;
               %attr = ();
               $tag  = '';
             } else {
-              try {
-                my $node;
-                $node = XML::Element.new(attribs => %attr, name => $tag) if $tag ne '!--';
-                $node = XML::Comment.new(data => %attr<text>) if $tag eq '!--';
-                @nest[@nest.elems - 1].append(XML::Text.new(text => $tbuffer)) if $tag ne '!--';
-                @nest[@nest.elems - 1].append($node); 
-                @nest.push($node) if $aclose == 0 && (!%!voids{$tag}.defined || %!voids{$tag} ne 1) && $node !~~ XML::Comment;
-                $tbuffer = '';
-              };
+              if $tag eq 'html' && $cparent.elements.elems == 0 {
+                #swap for the document's html tag
+                my $node = XML::Element.new(attribs => %attr, name => $tag);
+                @nest = $node;
+                $cparent = $node;
+                $.xmldoc = XML::Document.new: root => $cparent; 
+              } else {
+                try {
+                  if %!openisclose{@nest[@nest.elems - 1].name}.defined {
+                    for %!openisclose{@nest[@nest.elems - 1].name}.keys -> $k {
+                      if $k eq $tag {
+                        @nest[@nest.elems - 1].append(XML::Text.new(text => $tbuffer)) if $tbuffer ne '';
+                        $tbuffer = '';
+                        @nest.pop if @nest.elems > 1;
+                        last; 
+                      }
+                    }
+                  }
+
+                  my $node;
+                  $node = XML::Element.new(attribs => %attr, name => $tag) if $tag ne '!--';
+                  $node = XML::Comment.new(data => %attr<text>) if $tag eq '!--';
+                  @nest[@nest.elems - 1].append(XML::Text.new(text => $tbuffer)) if $tag ne '!--';
+                  @nest[@nest.elems - 1].append($node); 
+                  @nest.push($node) if $aclose == 0 && (!%!voids{$tag}.defined || %!voids{$tag} ne 1) && $node !~~ XML::Comment;
+                  $tbuffer = '';
+                };
+              }
             }
             $status = NIL;
           }

@@ -9,5 +9,5 @@ my $parser = HTML::Parser::XML.new;
 $parser.parse($html);
 plan 2;
 
-ok $parser.xmldoc.root.elements.elems == 1;
-ok $parser.xmldoc.root.name eq 'nil';
+ok $parser.xmldoc.root.elements.elems > 1;
+ok $parser.xmldoc.root.name eq 'html';
