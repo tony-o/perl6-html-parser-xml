@@ -72,7 +72,6 @@ class HTML::Parser::XML {
           self!ds if $cbuffer !~~ m{ [ '>' | '/' ] };
           $cbuffer = $.html.substr($.index, 1);
           $qnest = 0;
-          say :$tag.perl;
           if $tag eq '!--' {
             while $.html.substr($.index, 3) ne '-->' {
               $buffer ~= $.html.substr($.index,1);
