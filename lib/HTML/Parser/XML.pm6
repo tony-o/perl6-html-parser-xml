@@ -78,6 +78,12 @@ class HTML::Parser::XML {
               $.index++;
             }
             $.index += 3;
+          } elsif $tag eq "!doctype" {
+            while $.html.substr($.index, 1) ne '>' {
+              $buffer ~= $.html.substr($.index,1);
+              $.index++;
+            }
+            $.index += 1;
           } else {
             while $cbuffer !~~ m{ [ '>' | '/' ] } || $qnest == 1 {
               $buffer ~= $cbuffer;
