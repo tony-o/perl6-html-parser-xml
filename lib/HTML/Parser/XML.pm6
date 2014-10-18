@@ -72,12 +72,19 @@ class HTML::Parser::XML {
           self!ds if $cbuffer !~~ m{ [ '>' | '/' ] };
           $cbuffer = $.html.substr($.index, 1);
           $qnest = 0;
+          say :$tag.perl;
           if $tag eq '!--' {
             while $.html.substr($.index, 3) ne '-->' {
               $buffer ~= $.html.substr($.index,1);
               $.index++;
             }
             $.index += 3;
+          } elsif $tag eq "!doctype" {
+            while $.html.substr($.index, 1) ne '>' {
+              $buffer ~= $.html.substr($.index,1);
+              $.index++;
+            }
+            $.index += 1;
           } else {
             while $cbuffer !~~ m{ [ '>' | '/' ] } || $qnest == 1 {
               $buffer ~= $cbuffer;
