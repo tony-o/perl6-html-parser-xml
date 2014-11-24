@@ -69,7 +69,7 @@ class HTML::Parser::XML {
           self!ds if $cbuffer !~~ rx{ [ '>' | '/' ] };
           $cbuffer = $.html.substr($.index, 1);
           $qnest = 0;
-          if $tag eq '!--' {
+          if $tag.substr(0,3) eq '!--' {
             while $.html.substr($.index, 3) ne '-->' {
               $buffer ~= $.html.substr($.index,1);
               $.index++;
@@ -96,7 +96,7 @@ class HTML::Parser::XML {
           $bindex  = 0;
           %attrbuf = key => '', value => '';
           %attr<text> = $buffer if $tag eq '!--';
-          if $tag ne '!--' {
+          if $tag.substr(0,3) ne '!--' {
             while $bindex < $buffer.chars {
               $cbuffer = $buffer.substr($bindex++, 1);
               if ( $cbuffer ~~ rx{ \s } && ( ( $status eq INATTRVAL && $mquote eq '' ) || $status eq INATTRKEY ) ) || ( $cbuffer eq $mquote && $status eq INATTRVAL ) {
@@ -136,7 +136,7 @@ class HTML::Parser::XML {
               %.xmldoc.root.attribs{%attr.keys} = %attr.values;
             };
           } elsif $tag.defined && $tag eq 'script' {
-        
+            @nest.push(XML::Element.new(name => 'script'));
           } else {
             if $tag.substr(0,1) eq '/' || $tag.substr(0,*-1) eq '/' {
               @nest[@nest.elems - 1].append(XML::Text.new(text => $tbuffer)) if $tag ne '!--' && $tbuffer ne '';
@@ -165,11 +165,11 @@ class HTML::Parser::XML {
                   }
 
                   my $node;
-                  $node = XML::Element.new(attribs => %attr, name => $tag) if $tag ne '!--';
-                  $node = XML::Comment.new(data => %attr<text>) if $tag eq '!--';
-                  @nest[@nest.elems - 1].append(XML::Text.new(text => $tbuffer)) if $tag ne '!--';
+                  $node = XML::Element.new(attribs => %attr, name => $tag) if $tag.substr(0,3) ne '!--';
+                  $node = XML::Comment.new(data => %attr<text>) if $tag.substr(0,3) eq '!--';
+                  @nest[@nest.elems - 1].append(XML::Text.new(text => $tbuffer)) if $tag.substr(0,3) ne '!--';
                   @nest[@nest.elems - 1].append($node); 
-                  @nest.push($node) if $aclose == 0 && (!%!voids{$tag}.defined || %!voids{$tag} ne 1) && $node !~~ XML::Comment;
+                  @nest.push($node)  if $aclose == 0 && (!%!voids{$tag}.defined || %!voids{$tag} ne 1) && $node !~~ XML::Comment;
                   $tbuffer = '';
                 };
               }

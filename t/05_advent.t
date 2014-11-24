@@ -1,5 +1,6 @@
 use v6;
  
+use lib 'lib';
 use HTML::Parser::XML;
 use Test;
 plan 1;
