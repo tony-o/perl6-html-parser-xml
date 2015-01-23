@@ -155,7 +155,7 @@ class HTML::Parser::XML {
                 try {
                   if %!openisclose{@nest[@nest.elems - 1].name}.defined {
                     for %!openisclose{@nest[@nest.elems - 1].name}.keys -> $k {
-                      if $k eq $tag {
+                      if $k eq $tag && @nest[*-1].name eq $tag {
                         @nest[@nest.elems - 1].append(XML::Text.new(text => $tbuffer)) if $tbuffer ne '';
                         $tbuffer = '';
                         @nest.pop if @nest.elems > 1;

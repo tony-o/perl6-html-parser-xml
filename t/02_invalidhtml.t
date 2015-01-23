@@ -15,6 +15,7 @@ my $html = q{{
 my $parser = HTML::Parser::XML.new;
 
 $parser.parse($html);
+$parser.xmldoc.say;
 plan 2;
 
 ok $parser.xmldoc.root.elements[0].elements[1].name eq $parser.xmldoc.root.elements[0].elements[0].name;
