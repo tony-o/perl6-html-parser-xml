@@ -63,6 +63,7 @@ class HTML::Parser::XML {
           while $cbuffer !~~ rx{ [ \s | '>' ] } {
             $tag     ~= $cbuffer;
             $cbuffer  = $.html.substr(++$.index, 1);
+            last if $tag eq '!--';
           }
           $tag = lc $tag;
           #gather the attributes
