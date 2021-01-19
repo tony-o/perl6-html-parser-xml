@@ -1,7 +1,7 @@
 {
   "perl"        : "6.*",
   "name"        : "HTML::Parser::XML",
-  "version"     : "0.1.2",
+  "version"     : "0.1.3",
   "description" : "Parses HTML to produce an XML::Document",
   "auth"        : "zef:tony-o",
   "depends"     : [ "XML" ],
