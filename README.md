@@ -27,6 +27,6 @@ my $xmldoc = $parser.parse($html);
 ```
 
 
-Contact me, segomos on irc.freenode #perl6 (segomos)
+Contact me, tony-o on irc.freenode #perl6 (tony-o)
 
 License: Artistic 2.0
